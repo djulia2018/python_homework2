@@ -1,0 +1,19 @@
+def get_variations(cup, limit = 1000):
+    def get_cup(ways, cup, limit):
+        if len(ways) == 0:
+            return []
+        new_ways = [a + [x] for x in cup for a in ways if sum(a+[x]) <= limit]
+        return [a for a in new_ways if sum(a) == limit] + get_cup([a for a in new_ways if sum(a) != limit], cup, limit)
+
+    def uniq(l):
+        last = object()
+        for item in l:
+            if item == last:
+                continue
+            yield item
+            last = item
+
+    var = get_cup([[a] for a in cup], cup, limit)
+    return len(list(uniq(sorted([sorted(a) for a in var]))))
+
+print(get_variations([100,200,500], 1000))
